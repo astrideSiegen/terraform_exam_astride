@@ -13,16 +13,17 @@ provider "aws" {
   secret_key = "****************************************" # la clé sécrète crée pour l'utilisateur qui sera utilisé par terraform
 }
 
-# AWS S3 backend to store tf.state file
+#AWS S3 backend to store tf.state file
 #first create bucket on aws user interface or aws cli
-# terraform {
-#   backend "s3" {
-#     bucket = "wordpress-bucket_astride_dst"
-#     key    = "terraform.tfstate"
-#     region = "eu-west-3"
 
-#   }
-# }
+terraform {
+  backend "s3" {
+    bucket = "wordpress-bucket_astride_dst"
+    key    = "terraform.tfstate"
+    region = var.region
+
+  }
+}
 
 #Appel des modules
 module "networking" {

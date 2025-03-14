@@ -24,7 +24,15 @@ resource "aws_instance" "ec2" {
   subnet_id              = var.public_subnet_ids[0]
   availability_zone      = data.aws_availability_zones.available.names[0] # Définit l'AZ de l'ec2 qui doit etre la mm que celle de ebs
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
-  user_data              = file("install_wordpress.sh")
+  # user_data              = file("install_wordpress.sh")
+
+  # Ajouter les valeurs de la base de données lors de l'installation de wordpress sur notre ec2
+  user_data = templatefile("${path.module}/install_wordpress.sh", {
+    database_name     = var.database_name
+    database_user     = var.database_user
+    database_password = var.database_password
+    database_host     = var.database_host # Récupéré depuis le module RDS
+  })
 
   tags = {
     "Name" = "${var.namespace}-EC2"
