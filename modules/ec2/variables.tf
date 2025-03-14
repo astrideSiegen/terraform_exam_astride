@@ -14,16 +14,20 @@ variable "vpc_id" {
 }
 
 #Accéder à la liste des subnets publics
-variable "subnet_ids" {
+variable "public_subnet_ids" {
   description = "Liste des subnets publics"
   type        = list(string)
 }
-
-variable "security_group_id" {
-  description = "ID du Security Group pour EC2"
-  type        = string
-
+variable "private_subnet_ids" {
+  description = "Liste des subnets privés"
+  type        = list(string)
 }
+
+# variable "security_group_id" {
+#   description = "ID du Security Group pour EC2"
+#   type        = string
+
+# }
 # paire de clé utilisée
 variable "key_name" {
   type = string
