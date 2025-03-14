@@ -15,13 +15,6 @@ output "rds_username" {
   value       = aws_db_instance.wordpress_db.database_user
 }
 
-output "rds_password" {
-  description = "Mot de passe de la base de données RDS"
-  sensitive   = true
-  value       = aws_db_instance.wordpress_db.database_password
-
-}
-
 output "rds_endpoint" {
   description = "Adresse de la base de données RDS"
   value       = aws_db_instance.wordpress-db.address

@@ -42,7 +42,7 @@ variable "database_password" {
 }
 
 variable "database_host" {
-  description = "Adresse de la base de données RDS"
+  description = "Adresse du serveur de la base de données RDS"
   type        = string
 }
 

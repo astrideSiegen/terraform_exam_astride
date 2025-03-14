@@ -26,7 +26,7 @@ resource "aws_instance" "ec2" {
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
   # user_data              = file("install_wordpress.sh")
 
-  # Ajouter les valeurs de la base de données lors de l'installation de wordpress sur notre ec2
+  # Ajouter les valeurs de la base de données lors de l'installation de wordpress sur notre ec2 de facon dynamique
   user_data = templatefile("${path.module}/install_wordpress.sh", {
     database_name     = var.database_name
     database_user     = var.database_user
