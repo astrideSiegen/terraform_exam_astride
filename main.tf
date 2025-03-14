@@ -17,10 +17,15 @@ provider "aws" {
 #first create bucket on aws user interface or aws cli
 # terraform {
 #   backend "s3" {
-#     bucket = "eshop-tf-backend-bucket"
+#     bucket = "wordpress-bucket_astride_dst"
 #     key    = "terraform.tfstate"
 #     region = "eu-west-3"
 
 #   }
 # }
 
+#Appel des modules
+module "networking" {
+  source    = "./networking"
+  namespace = var.namespace
+}
