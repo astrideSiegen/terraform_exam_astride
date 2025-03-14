@@ -7,7 +7,6 @@ variable "availability_zone" {
 variable "db_instance_type" {
   description = "Classe d'instance pour RDS"
   type        = string
-  default     = "db.t3.micro"
 }
 
 variable "vpc_id" {
@@ -26,4 +25,20 @@ variable "private_subnet_ids" {
 variable "ec2_sg_id" {
   description = "ID du Security Group pour EC2"
   type        = string
+}
+
+variable "database_name" {
+  description = "Nom de la base de données RDS"
+  type        = string
+}
+
+variable "database_user" {
+  description = "Nom d'utilisateur de la base de données RDS"
+  type        = string
+}
+
+variable "database_password" {
+  description = "Mot de passe de la base de données RDS"
+  type        = string
+  sensitive   = true
 }
