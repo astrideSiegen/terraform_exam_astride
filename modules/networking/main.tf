@@ -1,6 +1,3 @@
-# récupère dynamiquement les zones de disponibilité
-data "aws_availability_zones" "available" {}
-
 
 #create vpc
 resource "aws_vpc" "vpc" {

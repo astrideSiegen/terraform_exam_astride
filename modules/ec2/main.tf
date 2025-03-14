@@ -24,6 +24,9 @@ resource "aws_instance" "ec2" {
   subnet_id              = var.public_subnet_ids[0]
   availability_zone      = data.aws_availability_zones.available.names[0] # Définit l'AZ de l'ec2 qui doit etre la mm que celle de ebs
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+
+  #besoin de monitoring et Network interface?
+
   # user_data              = file("install_wordpress.sh")
 
   # Ajouter les valeurs de la base de données lors de l'installation de wordpress sur notre ec2 de facon dynamique

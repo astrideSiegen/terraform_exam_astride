@@ -10,23 +10,22 @@ variable "region" {
   type        = string
 }
 
-
+#variables networking
 variable "vpc_cidr" {
-  description = "plage CIDR du VPC"
-  default     = "10.0.0.0/16"
+  description = "CIDR block pour le VPC"
+  type        = string
 }
 
 variable "public_subnet_cidrs" {
-  description = "CIDRs des sous-réseaux publics"
+  description = "Liste des CIDR blocks pour les subnets publics"
   type        = list(string)
-  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 variable "private_subnet_cidrs" {
-  description = "CIDRs des sous-réseaux privés"
+  description = "Liste des CIDR blocks pour les subnets privés"
   type        = list(string)
-  default     = ["10.0.3.0/24", "10.0.4.0/24"]
 }
+
 
 #variables ec2
 variable "instance_type" {

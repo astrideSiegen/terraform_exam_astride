@@ -1,6 +1,7 @@
 variable "vpc_cidr" {
   description = "CIDR range of the VPC"
   type        = string
+  default     = "10.0.0.0/16"
 }
 
 variable "network_name" {
@@ -12,11 +13,13 @@ variable "network_name" {
 variable "pubsn_cidr" {
   description = "liste des cidr des subnets publiques"
   type        = list(string)
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 variable "privat_sn_cidr" {
   description = "liste des cidr des subnets privés"
   type        = list(string)
+  default     = ["10.0.3.0/24", "10.0.4.0/24"]
 }
 
 
@@ -25,7 +28,10 @@ variable "cidr_all" {
   type    = string
 }
 
-
+variable "azs" {
+  description = "Liste des zones de disponibilité"
+  type        = list(string)
+}
 
 
 

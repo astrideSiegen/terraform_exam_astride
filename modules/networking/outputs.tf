@@ -14,3 +14,6 @@ output "private_subnet_ids" {
   value       = [aws_subnet.private_sn_1.id, aws_subnet.private_sn_2.id]
 }
 
+output "azs" {
+  value = data.aws_availability_zones.available.names
+}
