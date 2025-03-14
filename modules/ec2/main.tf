@@ -14,8 +14,8 @@ resource "aws_instance" "ec2" {
   associate_public_ip_address = true
   instance_type               = var.instance_type
   key_name                    = var.key_name
-  subnet_id                   = var.vpc.public_subnets[0]
-  vpc_security_group_ids      = [var.sg_pub_id]
+  subnet_id                   = var.public_subnet_ids[0]
+  vpc_security_group_ids      = [aws_security_group.ec2_sg.id]
   user_data                   = file("install_wordpress.sh")
 
   tags = {
@@ -26,6 +26,7 @@ resource "aws_instance" "ec2" {
 resource "aws_security_group" "ec2_sg" {
   vpc_id = var.vpc_id
 
+  # Autoriser le trafic HTTP (WordPress)
   ingress {
     from_port   = 80
     to_port     = 80
@@ -33,11 +34,23 @@ resource "aws_security_group" "ec2_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # Autoriser le trafic HTTPS (Sécurisé)
   ingress {
-    from_port   = 22
-    to_port     = 22
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "EC2-SG"
   }
 }
 
