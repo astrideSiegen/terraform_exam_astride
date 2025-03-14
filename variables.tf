@@ -5,14 +5,14 @@ variable "namespace" {
 }
 
 variable "region" {
-  description = "AWS région"
+  description = "AWS région où sera deployer notre ec2"
   default     = "eu-west-3"
   type        = string
 }
 
 
 variable "vpc_cidr" {
-  description = "CIDR du VPC"
+  description = "plage CIDR du VPC"
   default     = "10.0.0.0/16"
 }
 
@@ -28,16 +28,17 @@ variable "private_subnet_cidrs" {
   default     = ["10.0.3.0/24", "10.0.4.0/24"]
 }
 
+#variables ec2
 variable "instance_type" {
   description = "Type d'instance EC2"
   default     = "t2.micro"
 }
 
-variable "db_instance_type" {
-  description = "Type d'instance pour la base de données"
-  default     = "db.t3.micro"
-}
-
 variable "key_name" {
   description = "Nom de la clé SSH"
 }
+
+
+
+
+

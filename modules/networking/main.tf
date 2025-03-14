@@ -22,7 +22,7 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-#create subnet pour az1 et az2
+#create subnet pour az1 et az2 for HA
 resource "aws_subnet" "public_sn_1" {
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = var.pubsn_cidr[0]

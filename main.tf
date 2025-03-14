@@ -40,11 +40,14 @@ module "networking" {
 
 # Module EC2 WordPress
 module "ec2" {
-  source        = "./ec2"
-  vpc_id        = module.networking.vpc_id
-  public_subnet = module.networking.public_subnet_ids[0]
-  instance_type = var.instance_type
-  key_name      = var.key_name
+  source            = "./ec2"
+  vpc_id            = module.networking.vpc_id
+  public_subnet     = module.networking.public_subnet_ids[0]
+  instance_type     = var.instance_type
+  availability_zone = module.ec2.availability_zone_ec2
+  public_ip_ec2     = module.ec2.public_ip
+  private_ip_ec2    = module.ec2.private_ip
+  # key_name      = var.key_name
 }
 
 # Module Base de données RDS
@@ -52,7 +55,11 @@ module "rds" {
   source             = "./rds"
   vpc_id             = module.networking.vpc_id
   private_subnet_ids = module.networking.private_subnet_ids
-  db_instance_type   = var.db_instance_type
+  db_instance_type   = module.rds.db_instance_type
+  database_name      = module.rds.database_name
+  database_user      = module.rds.database_user
+  database_password  = module.rds.database_password
+
 }
 
 # Module EBS

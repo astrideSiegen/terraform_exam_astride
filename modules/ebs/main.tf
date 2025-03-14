@@ -3,7 +3,7 @@ resource "aws_ebs_volume" "wordpress-ebs" {
   size              = var.ebs_size
 
   tags = {
-    Name = "Wordpress-ebs"
+    Name = "Wordpress-ebs_as"
   }
 }
 

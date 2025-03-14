@@ -28,9 +28,10 @@ variable "private_subnet_ids" {
 #   type        = string
 
 # }
+
 # paire de clé utilisée
-variable "key_name" {
-  type = string
-}
+# variable "key_name" {
+#   type = string
+# }
 
 
