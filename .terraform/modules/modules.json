@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"ebs","Source":"./ebs","Dir":""},{"Key":"ec2","Source":"./ec2","Dir":""},{"Key":"networking","Source":"./modules/networking","Dir":"modules/networking"},{"Key":"rds","Source":"./rds","Dir":""}]}

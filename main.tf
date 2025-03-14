@@ -6,6 +6,9 @@ terraform {
     }
   }
 }
+# récupère dynamiquement les zones de disponibilité en s'assurant que az soit dans le fichier main
+data "aws_availability_zones" "available" {}
+
 # la région aws ou nous voulons déployer nos différentes ressources
 provider "aws" {
   region     = var.region
@@ -18,7 +21,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "wordpress-bucket_astride_dst"
+    bucket = "wordpress-bucket-astride-dst"
     key    = "terraform.tfstate"
     region = var.region
 
@@ -28,11 +31,11 @@ terraform {
 #Appel des modules
 # Module Réseau
 module "networking" {
-  source               = "./networking"
-  vpc_cidr             = var.vpc_cidr
-  public_subnet_cidrs  = var.public_subnet_cidrs
-  private_subnet_cidrs = var.private_subnet_cidrs
-  azs                  = data.aws_availability_zones.available.names
+  source         = "./modules/networking"
+  vpc_cidr       = var.vpc_cidr
+  pubsn_cidr     = var.public_subnet_cidrs
+  privat_sn_cidr = var.private_subnet_cidrs
+  azs            = data.aws_availability_zones.available.names
 }
 
 # Module EC2 WordPress
