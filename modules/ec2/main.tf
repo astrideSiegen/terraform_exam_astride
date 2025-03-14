@@ -1,22 +1,30 @@
-#Créez une Data Source aws_ami pour sélectionner l'ami disponible dans votre région
+#Créer une Data Source aws_ami pour sélectionner l'ami disponible dans la région eu-west-3
 data "aws_ami" "amazon-linux-2" {
   most_recent = true
   owners      = ["amazon"]
 
+  #Récupère uniquement les AMI avec stockage GP2 (général-purpose SSD)
   filter {
     name   = "name"
-    values = ["amzn2-ami-hvm*"]
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
   }
 }
+
 # Configurer l'instance EC2 dans un sous-réseau public
 resource "aws_instance" "ec2" {
   ami                         = data.aws_ami.amazon-linux-2.id
   associate_public_ip_address = true
   instance_type               = var.instance_type
-  key_name                    = var.key_name
-  subnet_id                   = var.public_subnet_ids[0]
-  vpc_security_group_ids      = [aws_security_group.ec2_sg.id]
-  user_data                   = file("install_wordpress.sh")
+  # key_name                    = var.key_name
+  subnet_id              = var.public_subnet_ids[0]
+  availability_zone      = data.aws_availability_zones.available.names[0] # Définit l'AZ de l'ec2 qui doit etre la mm que celle de ebs
+  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+  user_data              = file("install_wordpress.sh")
 
   tags = {
     "Name" = "${var.namespace}-EC2"
