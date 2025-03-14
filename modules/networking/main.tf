@@ -45,7 +45,7 @@ resource "aws_subnet" "public_sn_2" {
 
 resource "aws_subnet" "private_sn_1" {
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = var.prisn1_cidr
+  cidr_block        = var.privat_sn_cidr[0]
   availability_zone = data.aws_availability_zones.available.names[0]
 
   tags = {
@@ -56,7 +56,7 @@ resource "aws_subnet" "private_sn_1" {
 
 resource "aws_subnet" "private_sn_2" {
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = var.prisn2_cidr
+  cidr_block        = var.privat_sn_cidr[1]
   availability_zone = data.aws_availability_zones.available.names[1]
   tags = {
     Name = "private_sn_2"

@@ -1,20 +1,22 @@
 resource "aws_db_instance" "wordpress_db" {
-  allocated_storage    = 20
-  engine               = "mysql"
-  instance_class       = var.db_instance_type
-  username             = "admin"
-  password             = "supersecret"
-  multi_az             = true
-  publicly_accessible  = false
-  db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
+  allocated_storage      = 20
+  engine                 = "mysql"
+  instance_class         = var.db_instance_type
+  username               = "admin"
+  password               = "supersecret"
+  db_name                = "wordpress_db_astride"
+  multi_az               = true
+  publicly_accessible    = false
+  db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.name
+  vpc_security_group_ids = ["${aws_security_group.rds_sg.id}"]
 
   tags = {
-    Name = "WordPress-RDS"
+    Name = "WordPress-RDS_Astride"
   }
 }
 
 resource "aws_db_subnet_group" "rds_subnet_group" {
-  name       = "wordpress-db-subnet-group"
+  name       = "wordpress-db-subnet-group_as"
   subnet_ids = var.private_subnet_ids
 }
 
@@ -37,6 +39,6 @@ resource "aws_security_group" "rds_sg" {
   }
 
   tags = {
-    Name = "RDS-SG"
+    Name = "RDS-SG_as"
   }
 }
