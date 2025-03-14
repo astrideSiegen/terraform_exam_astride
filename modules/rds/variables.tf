@@ -44,6 +44,6 @@ variable "database_user" {
 variable "database_password" {
   description = "Mot de passe de la base de données RDS"
   type        = string
-  default     = "wordpress2025"
+  default     = "Wordpress@2025"
   sensitive   = true
 }
