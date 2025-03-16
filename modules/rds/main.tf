@@ -57,9 +57,7 @@ data "aws_secretsmanager_secret_version" "db_secret_value" {
 }
 
 #Détermine le mot de passe en fonction de la priorité
+
 locals {
-  db_password = coalesce(
-    var.database_password,
-    jsondecode(data.aws_secretsmanager_secret_version.db_secret_value.secret_string)["database_password"]
-  )
+  db_password = var.database_password != "" ? var.database_password : jsondecode(data.aws_secretsmanager_secret_version.db_secret_value.secret_string)["database_password"]
 }
