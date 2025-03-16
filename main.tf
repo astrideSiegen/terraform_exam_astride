@@ -38,20 +38,17 @@ module "networking" {
   azs            = data.aws_availability_zones.available.names
 }
 
-# Module EC2 WordPress
+#Appel du  Module EC2 WordPress
 module "ec2" {
-  source            = "./ec2"
-  vpc_id            = module.networking.vpc_id
-  public_subnet     = module.networking.public_subnet_ids[0]
-  instance_type     = var.instance_type
+  source            = "./modules/ec2"
+  vpc_id            = var.vpc_id
+  public_subnet_id  = element(module.networking.public_subnet_ids, 0)  # Premier subnet public
+  private_subnet_id = element(module.networking.private_subnet_ids, 1) # Deuxième subnet privé
   availability_zone = data.aws_availability_zones.names[0]
-  public_ip_ec2     = module.ec2.public_ip
-  private_ip_ec2    = module.ec2.private_ip
-
   #les valeurs de notre rds
   database_name     = module.rds.rds_db_name
   database_user     = module.rds.rds_username
-  database_password = var.database_password   # Utilisez la variable locale ici !
+  database_password = var.database_password
   database_host     = module.rds.rds_endpoint #  Récupéré depuis le module RDS
   # key_name      = var.key_name
 }

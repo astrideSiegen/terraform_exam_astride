@@ -11,6 +11,12 @@ variable "region" {
 }
 
 #variables networking
+# VPC
+variable "vpc_id" {
+  type        = string
+  description = "acceder à l'id du vpc"
+}
+
 variable "vpc_cidr" {
   description = "CIDR block pour le VPC"
   type        = string

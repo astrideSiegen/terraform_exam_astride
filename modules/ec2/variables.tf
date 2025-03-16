@@ -9,19 +9,25 @@ variable "instance_type" {
   description = "type d'intance ec2"
   default     = "t2.micro"
 }
+
 variable "vpc_id" {
-  description = "ID du VPC"
+  description = "ID du VPC dans lequel déployer EC2"
   type        = string
 }
 
-#Accéder à la liste des subnets publics
-variable "public_subnet_ids" {
-  description = "Liste des subnets publics"
-  type        = list(string)
+#Accéder à la liste des subnets publics, privés et az où sera deployer notre ec2
+variable "public_subnet_id" {
+  description = "Le subnet public où l'instance EC2 sera créée"
+  type        = string
 }
-variable "private_subnet_ids" {
-  description = "Liste des subnets privés"
-  type        = list(string)
+variable "private_subnet_id" {
+  description = "Le subnet public où l'instance EC2 sera créée"
+  type        = string
+}
+
+variable "availability_zone" {
+  description = "La zone de disponibilité dans laquelle l'EC2 doit être déployée"
+  type        = string
 }
 
 # valeurs de rds à ajouter sur notre ec2 lors du deploiement

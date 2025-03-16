@@ -21,7 +21,7 @@ resource "aws_instance" "ec2" {
   associate_public_ip_address = true
   instance_type               = var.instance_type
   # key_name                    = var.key_name
-  subnet_id              = var.public_subnet_ids[0]
+  subnet_id              = var.public_subnet_id
   availability_zone      = data.aws_availability_zones.available.names[0] # Définit l'AZ de l'ec2 qui doit etre la mm que celle de ebs
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 
