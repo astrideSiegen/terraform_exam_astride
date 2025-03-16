@@ -22,3 +22,10 @@ output "availability_zone_ec2" {
   description = "la zone de disponibilité de notre ec2"
   value       = data.aws_availability_zones.names[0]
 }
+
+#database
+output "database_password_set" {
+  description = "Confirmation que le mot de passe de la base de données est défini (sans affichage)"
+  value       = var.database_password != "" ? "Mot de passe défini" : "Non défini"
+  sensitive   = true
+}

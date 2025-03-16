@@ -1,1 +1,1 @@
-{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"ebs","Source":"./ebs","Dir":""},{"Key":"ec2","Source":"./ec2","Dir":""},{"Key":"networking","Source":"./modules/networking","Dir":"modules/networking"},{"Key":"rds","Source":"./rds","Dir":""}]}
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"ebs","Source":"./modules/ebs","Dir":"modules/ebs"},{"Key":"ec2","Source":"./modules/ec2","Dir":"modules/ec2"},{"Key":"networking","Source":"./modules/networking","Dir":"modules/networking"},{"Key":"rds","Source":"./modules/rds","Dir":"modules/rds"}]}

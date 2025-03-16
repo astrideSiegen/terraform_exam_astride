@@ -21,10 +21,10 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket = "wordpress-bucket-astride-dst"
-    key    = "terraform.tfstate"
-    region = var.region
-
+    bucket  = "wordpress-bucket-astride-dst"
+    key     = "terraform.tfstate"
+    region  = "eu-west-3"
+    encrypt = true #active le chiffrement par défaut (AES-256)
   }
 }
 
@@ -33,8 +33,8 @@ terraform {
 module "networking" {
   source         = "./modules/networking"
   vpc_cidr       = var.vpc_cidr
-  pubsn_cidr     = var.public_subnet_cidrs
-  privat_sn_cidr = var.private_subnet_cidrs
+  pubsn_cidr     = var.pubsn_cidr
+  privat_sn_cidr = var.privat_sn_cidr
   azs            = data.aws_availability_zones.available.names
 }
 
@@ -43,32 +43,38 @@ module "ec2" {
   source            = "./modules/ec2"
   vpc_id            = var.vpc_id
   public_subnet_id  = element(module.networking.public_subnet_ids, 0)  # Premier subnet public
-  private_subnet_id = element(module.networking.private_subnet_ids, 1) # Deuxième subnet privé
+  private_subnet_id = element(module.networking.private_subnet_ids, 0) # premier subnet privé
   availability_zone = data.aws_availability_zones.names[0]
+  database_password = module.rds_password
   #les valeurs de notre rds
-  database_name     = module.rds.rds_db_name
-  database_user     = module.rds.rds_username
-  database_password = var.database_password
-  database_host     = module.rds.rds_endpoint #  Récupéré depuis le module RDS
+  database_name = module.rds.rds_db_name
+  database_user = module.rds.rds_username
+  database_host = module.rds.rds_endpoint #  Récupéré depuis le module RDS
   # key_name      = var.key_name
 }
 
 # Module Base de données RDS
 module "rds" {
-  source             = "./rds"
-  vpc_id             = module.networking.vpc_id
+  source             = "./modules/rds"
+  vpc_id             = var.vpc_id
+  public_subnet_ids  = module.networking.public_subnet_ids
   private_subnet_ids = module.networking.private_subnet_ids
+  availability_zone  = data.aws_availability_zones.available.names
   db_instance_type   = module.rds.db_instance_type
-  database_name      = module.rds.rds_db_name
-  database_user      = module.rds.rds_db_user
-  database_password  = module.rds.database_password
-  database_host      = module.rds.rds_endpoint
+  ec2_sg_id          = module.ec2.ec2_sg_id #groupe de sécurité de notre rds
+
+  # Récupération des valeurs de la base de données RDS depuis `module.rds`
+  database_name     = module.rds.rds_db_name
+  database_user     = module.rds.rds_db_user
+  database_password = module.rds.rds_password
+  database_host     = module.rds_endpoint
 
 }
 
 # Module EBS
 module "ebs" {
-  source            = "./ebs"
-  ec2_id            = module.ec2.instance_id
-  availability_zone = data.aws_availability_zones.names[0] # module.networking.azs[0]
+  source            = "./modules/ebs"
+  vpc_id            = var.vpc_id
+  ec2_id            = module.ec2.ec2_id
+  availability_zone = data.aws_availability_zones.available.names[0] # module.networking.azs[0]
 }

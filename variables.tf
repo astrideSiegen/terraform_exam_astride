@@ -22,12 +22,12 @@ variable "vpc_cidr" {
   type        = string
 }
 
-variable "public_subnet_cidrs" {
+variable "pubsn_cidr" {
   description = "Liste des CIDR blocks pour les subnets publics"
   type        = list(string)
 }
 
-variable "private_subnet_cidrs" {
+variable "privat_sn_cidr" {
   description = "Liste des CIDR blocks pour les subnets privés"
   type        = list(string)
 }
@@ -39,9 +39,9 @@ variable "instance_type" {
   default     = "t2.micro"
 }
 
-variable "key_name" {
-  description = "Nom de la clé SSH"
-}
+# variable "key_name" {
+#   description = "Nom de la clé SSH"
+# }
 
 
 
