@@ -1,3 +1,5 @@
+# récupère dynamiquement les zones de disponibilité en s'assurant que az soit dans le fichier main
+data "aws_availability_zones" "available" {}
 
 #create vpc
 resource "aws_vpc" "vpc" {

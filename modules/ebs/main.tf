@@ -1,3 +1,6 @@
+# récupère dynamiquement les zones de disponibilité en s'assurant que az soit dans le fichier main
+data "aws_availability_zones" "available" {}
+
 resource "aws_ebs_volume" "wordpress-ebs" {
   availability_zone = data.aws_availability_zones.available.names[0]
   size              = var.ebs_size

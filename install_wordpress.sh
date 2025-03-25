@@ -75,10 +75,10 @@ wget https://wordpress.org/latest.zip
 unzip latest.zip
 
 # Move WordPress files to Apache's web directory
-mv wordpress/* ${WORDPRESS_DIR}
+mv wordpress/* $WORDPRESS_DIR
 
 # Change ownership of the web directory
-sudo chown -R ec2-user:apache ${WORDPRESS_DIR}
+sudo chown -R ec2-user:apache $WORDPRESS_DIR
 
 sudo -i
 # Create the WordPress database
@@ -98,22 +98,22 @@ exit
 cd
 
 # Change to the WordPress directory
-cd ${WORDPRESS_DIR}
+cd $WORDPRESS_DIR
 
 # Create a WordPress configuration file from the sample
 cp wp-config-sample.php wp-config.php
 
-sed -i "s/database_name_here/${DB_NAME}/" wp-config.php
-sed -i "s/username_here/${DB_USER}/" wp-config.php
-sed -i "s/password_here/${DB_PASSWORD}/" wp-config.php
-sed -i "s/localhost/${DB_HOST}/" wp-config.php
+sed -i "s/database_name_here/$DB_NAME/" wp-config.php
+sed -i "s/username_here/$DB_USER/" wp-config.php
+sed -i "s/password_here/$DB_PASSWORD/" wp-config.php
+sed -i "s/localhost/$DB_HOST/" wp-config.php
 
 
 # Set appropriate permissions for the web directory (directories)
-sudo find ${WORDPRESS_DIR} -type d -exec chmod 755 {} \;
+sudo find $WORDPRESS_DIR -type d -exec chmod 755 {} \;
 
 # Set appropriate permissions for the web directory (files)
-sudo find ${WORDPRESS_DIR} -type f -exec chmod 644 {} \;
+sudo find $WORDPRESS_DIR -type f -exec chmod 644 {} \;
 
 # Restart Apache
 sudo systemctl restart httpd

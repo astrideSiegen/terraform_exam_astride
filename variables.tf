@@ -11,25 +11,23 @@ variable "region" {
 }
 
 #variables networking
-# VPC
-variable "vpc_id" {
-  type        = string
-  description = "acceder à l'id du vpc"
-}
 
 variable "vpc_cidr" {
   description = "CIDR block pour le VPC"
   type        = string
+  default     = "10.0.0.0/16"
 }
 
 variable "pubsn_cidr" {
   description = "Liste des CIDR blocks pour les subnets publics"
   type        = list(string)
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 variable "privat_sn_cidr" {
   description = "Liste des CIDR blocks pour les subnets privés"
   type        = list(string)
+  default     = ["10.0.3.0/24", "10.0.4.0/24"]
 }
 
 
@@ -43,6 +41,36 @@ variable "instance_type" {
 #   description = "Nom de la clé SSH"
 # }
 
+# RDS Configuration
+variable "db_instance_type" {
+  description = "Classe d'instance pour RDS"
+  type        = string
+  default     = "db.t3.micro"
+}
+
+
+variable "database_name" {
+  description = "Nom de la base de données RDS"
+  type        = string
+  default     = "wordpress_db_astride"
+}
+
+variable "database_user" {
+  description = "Nom d'utilisateur de la base de données RDS"
+  type        = string
+  default     = "admin_astride"
+}
+
+variable "database_password" {
+  description = "Mot de passe de la base de données RDS"
+  type        = string
+  #default     = "Wordpress@2025"
+  sensitive = true
+}
+# variable "database_host" {
+#   description = "host de notre base de donnée"
+#   type        = string
+# }
 
 
 

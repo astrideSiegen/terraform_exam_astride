@@ -14,8 +14,8 @@ variable "ec2_id" {
 }
 
 variable "availability_zone" {
-  description = "Liste des zones de disponibilité disponibles"
-  type        = list(string)
+  description = "zone de disponibilité de notre ebs"
+  type        = string
 }
 
 

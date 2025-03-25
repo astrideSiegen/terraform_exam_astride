@@ -1,3 +1,6 @@
+# récupère dynamiquement les zones de disponibilité en s'assurant que az soit dans le fichier main
+data "aws_availability_zones" "available" {}
+
 #Créer une Data Source aws_ami pour sélectionner l'ami disponible dans la région eu-west-3
 data "aws_ami" "amazon-linux-2" {
   most_recent = true
@@ -31,7 +34,7 @@ resource "aws_instance" "ec2" {
   # user_data              = file("install_wordpress.sh")
 
   # Ajouter les valeurs de la base de données lors de l'installation de wordpress sur notre ec2 de facon dynamique
-  user_data = templatefile("${path.module}/install_wordpress.sh", {
+  user_data = templatefile("./install_wordpress.sh", {
     database_name     = var.database_name
     database_user     = var.database_user
     database_password = var.database_password
@@ -74,16 +77,4 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
-# Configurer l'instance EC2 dans un sous-réseau privé
-# resource "aws_instance" "ec2_private" {
-#   ami                         = data.aws_ami.amazon-linux-2.id
-#   associate_public_ip_address = false
-#   instance_type               = "t2.micro"
-#   key_name                    = var.key_name
-#   subnet_id                   = var.vpc.private_subnets[1]
-#   vpc_security_group_ids      = [var.sg_priv_id]
 
-#   tags = {
-#     "Name" = "${var.namespace}-EC2-PRIVATE"
-#   }
-# }

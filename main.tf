@@ -6,15 +6,15 @@ terraform {
     }
   }
 }
-# récupère dynamiquement les zones de disponibilité en s'assurant que az soit dans le fichier main
-data "aws_availability_zones" "available" {}
 
 # la région aws ou nous voulons déployer nos différentes ressources
 provider "aws" {
-  region     = var.region
-  access_key = "********************************"         # la clé d'acces crée pour l'utilisateur qui sera utilisé par terraform
-  secret_key = "****************************************" # la clé sécrète crée pour l'utilisateur qui sera utilisé par terraform
+
 }
+
+# récupère dynamiquement les zones de disponibilité en s'assurant que az soit dans le fichier main
+data "aws_availability_zones" "available" {}
+
 
 #AWS S3 backend to store tf.state file
 #first create bucket on aws user interface or aws cli
@@ -38,14 +38,32 @@ module "networking" {
   azs            = data.aws_availability_zones.available.names
 }
 
+# Module Base de données RDS
+module "rds" {
+  source             = "./modules/rds"
+  vpc_id             = module.networking.vpc_id
+  public_subnet_ids  = module.networking.public_subnet_ids
+  private_subnet_ids = module.networking.private_subnet_ids
+  availability_zones = data.aws_availability_zones.available.names
+  db_instance_type   = var.db_instance_type
+  ec2_sg_id          = module.ec2.ec2_sg_id #groupe de sécurité de notre rds
+
+  # Récupération des valeurs de la base de données RDS depuis `module.rds`
+  database_name     = var.database_name
+  database_user     = var.database_user
+  database_password = var.database_password
+
+}
+
+
 #Appel du  Module EC2 WordPress
 module "ec2" {
   source            = "./modules/ec2"
-  vpc_id            = var.vpc_id
-  public_subnet_id  = element(module.networking.public_subnet_ids, 0)  # Premier subnet public
-  private_subnet_id = element(module.networking.private_subnet_ids, 0) # premier subnet privé
-  availability_zone = data.aws_availability_zones.names[0]
-  database_password = module.rds_password
+  vpc_id            = module.networking.vpc_id
+  public_subnet_id  = module.networking.public_subnet_ids[0]  # Premier subnet public
+  private_subnet_id = module.networking.private_subnet_ids[0] # premier subnet privé
+  availability_zone = data.aws_availability_zones.available.names[0]
+  database_password = module.rds.rds_password
   #les valeurs de notre rds
   database_name = module.rds.rds_db_name
   database_user = module.rds.rds_username
@@ -53,28 +71,11 @@ module "ec2" {
   # key_name      = var.key_name
 }
 
-# Module Base de données RDS
-module "rds" {
-  source             = "./modules/rds"
-  vpc_id             = var.vpc_id
-  public_subnet_ids  = module.networking.public_subnet_ids
-  private_subnet_ids = module.networking.private_subnet_ids
-  availability_zone  = data.aws_availability_zones.available.names
-  db_instance_type   = module.rds.db_instance_type
-  ec2_sg_id          = module.ec2.ec2_sg_id #groupe de sécurité de notre rds
-
-  # Récupération des valeurs de la base de données RDS depuis `module.rds`
-  database_name     = module.rds.rds_db_name
-  database_user     = module.rds.rds_db_user
-  database_password = module.rds.rds_password
-  database_host     = module.rds_endpoint
-
-}
 
 # Module EBS
 module "ebs" {
   source            = "./modules/ebs"
-  vpc_id            = var.vpc_id
+  vpc_id            = module.networking.vpc_id
   ec2_id            = module.ec2.ec2_id
   availability_zone = data.aws_availability_zones.available.names[0] # module.networking.azs[0]
 }

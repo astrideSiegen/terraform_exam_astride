@@ -18,10 +18,10 @@ output "ec2_id" {
   value       = aws_instance.ec2.id
 }
 
-output "availability_zone_ec2" {
-  description = "la zone de disponibilité de notre ec2"
-  value       = data.aws_availability_zones.names[0]
-}
+# output "availability_zone_ec2" {
+#   description = "la zone de disponibilité de notre ec2"
+#   value       = data.aws_availability_zones.names[0]
+# }
 
 #database
 output "database_password_set" {
