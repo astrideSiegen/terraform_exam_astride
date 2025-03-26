@@ -27,8 +27,8 @@ resource "aws_instance" "ec2" {
   subnet_id              = var.public_subnet_id
   availability_zone      = data.aws_availability_zones.available.names[0] # Définit l'AZ de l'ec2 qui doit etre la mm que celle de ebs
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+  key_name               = var.key_name
 
-  depends_on = [aws_security_group.ec2_sg] # Assure la création du SG avant EC2
   #besoin de monitoring et Network interface?
 
   # user_data              = file("install_wordpress.sh")
@@ -44,6 +44,8 @@ resource "aws_instance" "ec2" {
   tags = {
     "Name" = "${var.namespace}-EC2"
   }
+
+  depends_on = [aws_security_group.ec2_sg] # Assure la création du SG avant EC2
 }
 
 resource "aws_security_group" "ec2_sg" {

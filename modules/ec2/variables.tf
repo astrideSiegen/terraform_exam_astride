@@ -10,6 +10,11 @@ variable "instance_type" {
   default     = "t2.micro"
 }
 
+variable "key_name" {
+  description = "Nom de la paire de clés SSH EC2"
+  type        = string
+}
+
 variable "vpc_id" {
   description = "ID du VPC dans lequel déployer EC2"
   type        = string
@@ -20,10 +25,7 @@ variable "public_subnet_id" {
   description = "Le subnet public où l'instance EC2 sera créée"
   type        = string
 }
-variable "private_subnet_id" {
-  description = "Le subnet privée où l'instance EC2 sera créée"
-  type        = string
-}
+
 
 variable "availability_zone" {
   description = "La zone de disponibilité dans laquelle l'EC2 doit être déployée"

@@ -4,7 +4,7 @@ resource "aws_db_instance" "wordpress_db" {
   engine_version         = "8.0"
   instance_class         = var.db_instance_type
   username               = var.database_user
-  password               = local.db_password #Utilisation du mot de passe sécurisé !
+  password               = var.database_password #Utilisation du mot de passe sécurisé !
   db_name                = var.database_name
   multi_az               = true
   publicly_accessible    = false
@@ -47,17 +47,17 @@ resource "aws_security_group" "rds_sg" {
 }
 
 #data sources AWS Secrets Manager pour récupérer le mot de passe sécurisé :
-data "aws_secretsmanager_secret" "db_secret" {
-  name = "wordpress-pwd-rds" # Nom du secret dans AWS Secrets Manager sur L#interface utilisateur
-}
+# data "aws_secretsmanager_secret" "db_secret" {
+#   name = "wordpress-pwd-rds" # Nom du secret dans AWS Secrets Manager sur L#interface utilisateur
+# }
 
-#Récupère la dernière version du secret
-data "aws_secretsmanager_secret_version" "db_secret_value" {
-  secret_id = data.aws_secretsmanager_secret.db_secret.id
-}
+# #Récupère la dernière version du secret
+# data "aws_secretsmanager_secret_version" "db_secret_value" {
+#   secret_id = data.aws_secretsmanager_secret.db_secret.id
+# }
 
-#Détermine le mot de passe en fonction de la priorité
+# #Détermine le mot de passe en fonction de la priorité
 
-locals {
-  db_password = var.database_password != "" ? var.database_password : jsondecode(data.aws_secretsmanager_secret_version.db_secret_value.secret_string)["database_password"]
-}
+# locals {
+#   db_password = var.database_password != "" ? var.database_password : jsondecode(data.aws_secretsmanager_secret_version.db_secret_value.secret_string)["database_password"]
+# }

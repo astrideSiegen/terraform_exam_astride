@@ -42,12 +42,10 @@ module "networking" {
 module "rds" {
   source             = "./modules/rds"
   vpc_id             = module.networking.vpc_id
-  public_subnet_ids  = module.networking.public_subnet_ids
   private_subnet_ids = module.networking.private_subnet_ids
   availability_zones = data.aws_availability_zones.available.names
   db_instance_type   = var.db_instance_type
   ec2_sg_id          = module.ec2.ec2_sg_id #groupe de sécurité de notre rds
-
   # Récupération des valeurs de la base de données RDS depuis `module.rds`
   database_name     = var.database_name
   database_user     = var.database_user
@@ -60,9 +58,9 @@ module "rds" {
 module "ec2" {
   source            = "./modules/ec2"
   vpc_id            = module.networking.vpc_id
-  public_subnet_id  = module.networking.public_subnet_ids[0]  # Premier subnet public
-  private_subnet_id = module.networking.private_subnet_ids[0] # premier subnet privé
+  public_subnet_id  = module.networking.public_subnet_ids[0] # Premier subnet public
   availability_zone = data.aws_availability_zones.available.names[0]
+  key_name          = var.key_name
   database_password = module.rds.rds_password
   #les valeurs de notre rds
   database_name = module.rds.rds_db_name
@@ -70,6 +68,7 @@ module "ec2" {
   database_host = module.rds.rds_endpoint #  Récupéré depuis le module RDS
   # key_name      = var.key_name
 }
+
 
 
 # Module EBS

@@ -8,17 +8,14 @@ variable "vpc_id" {
   type        = string
 }
 
-variable "public_subnet_ids" {
-  description = "Liste des subnets publics"
-  type        = list(string)
-}
+
 variable "private_subnet_ids" {
-  description = "Liste des subnets privés"
+  description = "Liste des subnets privés où sera crée rds"
   type        = list(string)
 }
 
 variable "ec2_sg_id" {
-  description = "ID du Security Group pour EC2"
+  description = "ID du Security Group de EC2 autorisé à accéder à rds"
   type        = string
 }
 
