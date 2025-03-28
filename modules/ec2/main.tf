@@ -34,7 +34,7 @@ resource "aws_instance" "ec2" {
   # user_data              = file("install_wordpress.sh")
 
   # Ajouter les valeurs de la base de données lors de l'installation de wordpress sur notre ec2 de facon dynamique
-  user_data = templatefile("./install_wordpress.sh", {
+  user_data = templatefile("${path.module}../../install_wordpress.sh", {
     database_name     = var.database_name
     database_user     = var.database_user
     database_password = var.database_password
@@ -56,22 +56,24 @@ resource "aws_security_group" "ec2_sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] #cidr_blocs autorisés à accéder à la machine à travers ce bloc
+    cidr_blocks = ["0.0.0.0/0"] #cidr_blocs autorisés à accéder à la machine à travers ce bloc, tout comme c'est sur le web
   }
 
   # Autoriser le trafic HTTPS (Sécurisé)
   ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] #cidr_blocs autorisés à accéder à la machine à travers ce bloc
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"] #cidr_blocs autorisés à accéder à la machine à travers ce bloc
+    ipv6_cidr_blocks = ["::/0"]
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 
   tags = {
