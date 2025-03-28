@@ -1,7 +1,3 @@
-variable "namespace" {
-  description = "L'espace de noms de projet à utiliser pour la dénomination unique des ressources"
-  type        = string
-}
 
 variable "region" {
   description = "AWS région où sera deployer notre ec2"

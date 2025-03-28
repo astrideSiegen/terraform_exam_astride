@@ -34,7 +34,7 @@ resource "aws_instance" "ec2" {
   # user_data              = file("install_wordpress.sh")
 
   # Ajouter les valeurs de la base de données lors de l'installation de wordpress sur notre ec2 de facon dynamique
-  user_data = templatefile("${path.module}../../install_wordpress.sh", {
+  user_data = templatefile("${path.module}/../../install_wordpress.sh", {
     database_name     = var.database_name
     database_user     = var.database_user
     database_password = var.database_password
